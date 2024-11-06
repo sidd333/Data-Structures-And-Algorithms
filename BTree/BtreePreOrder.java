@@ -104,6 +104,15 @@ public class BtreePreOrder {
             System.out.print(node.data + ", ");
             inorder(node.right);
         }
+
+        public void postorder(Node node){
+            if(node == null){
+                return;
+            }
+            postorder(node.left);
+            postorder(node.right);
+            System.out.print(node.data + ", ");
+        }
     }
 
     public static void main(String[] args) {
@@ -119,6 +128,8 @@ public class BtreePreOrder {
         btree.preorder(root);
         System.out.println("\n\ninorder");
         btree.inorder(root);
+        System.out.println("\n\npost order");
+        btree.postorder(root);
         // Expected Tree Structure:
         // 1
         // / \
