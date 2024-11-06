@@ -1,5 +1,8 @@
 package BTree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BtreePreOrder {
 
     static class Node {
@@ -113,6 +116,37 @@ public class BtreePreOrder {
             postorder(node.right);
             System.out.print(node.data + ", ");
         }
+
+        public void levelorder(Node node){
+            Queue<Node> q= new LinkedList<>();
+       q.add(node);
+       q.add(null);
+       while (!q.isEmpty()) {
+        Node curr = q.remove();
+
+        if (curr == null) {
+            // Print a newline to separate levels
+            System.out.println();
+            if (q.isEmpty()) {
+                break; // If the queue is empty, we are done
+            } else {
+                // Add another null marker for the next level
+                q.add(null);
+            }
+        } else {
+            // Print the data of the current node
+            System.out.print(curr.data + " ");
+
+            // Add the left and right children to the queue
+            if (curr.left != null) {
+                q.add(curr.left);
+            }
+            if (curr.right != null) {
+                q.add(curr.right);
+            }
+        }
+    }
+        }
     }
 
     public static void main(String[] args) {
@@ -122,7 +156,8 @@ public class BtreePreOrder {
 
         // Build the tree starting from the root
         Node root = btree.buildTree(nodes);
-
+        System.out.println("levelorder");
+        btree.levelorder(root);
         System.out.println("\npreorder");  
 
         btree.preorder(root);
@@ -130,6 +165,8 @@ public class BtreePreOrder {
         btree.inorder(root);
         System.out.println("\n\npost order");
         btree.postorder(root);
+
+       
         // Expected Tree Structure:
         // 1
         // / \
