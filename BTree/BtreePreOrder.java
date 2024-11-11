@@ -99,8 +99,8 @@ public class BtreePreOrder {
             preorder(node.right);
         }
 
-        public void inorder(Node node){
-            if(node == null){
+        public void inorder(Node node) {
+            if (node == null) {
                 return;
             }
             inorder(node.left);
@@ -108,8 +108,8 @@ public class BtreePreOrder {
             inorder(node.right);
         }
 
-        public void postorder(Node node){
-            if(node == null){
+        public void postorder(Node node) {
+            if (node == null) {
                 return;
             }
             postorder(node.left);
@@ -117,35 +117,98 @@ public class BtreePreOrder {
             System.out.print(node.data + ", ");
         }
 
-        public void levelorder(Node node){
-            Queue<Node> q= new LinkedList<>();
-       q.add(node);
-       q.add(null);
-       while (!q.isEmpty()) {
-        Node curr = q.remove();
+        public void levelorder(Node node) {
+            Queue<Node> q = new LinkedList<>();
+            q.add(node);
+            q.add(null);
+            while (!q.isEmpty()) {
+                Node curr = q.remove();
 
-        if (curr == null) {
-            // Print a newline to separate levels
-            System.out.println();
-            if (q.isEmpty()) {
-                break; // If the queue is empty, we are done
-            } else {
-                // Add another null marker for the next level
-                q.add(null);
-            }
-        } else {
-            // Print the data of the current node
-            System.out.print(curr.data + " ");
+                if (curr == null) {
+                    // Print a newline to separate levels
+                    System.out.println();
+                    if (q.isEmpty()) {
+                        break; // If the queue is empty, we are done
+                    } else {
+                        // Add another null marker for the next level
+                        q.add(null);
+                    }
+                } else {
+                    // Print the data of the current node
+                    System.out.print(curr.data + " ");
 
-            // Add the left and right children to the queue
-            if (curr.left != null) {
-                q.add(curr.left);
-            }
-            if (curr.right != null) {
-                q.add(curr.right);
+                    // Add the left and right children to the queue
+                    if (curr.left != null) {
+                        q.add(curr.left);
+                    }
+                    if (curr.right != null) {
+                        q.add(curr.right);
+                    }
+                }
             }
         }
-    }
+    
+
+        public int sumOfTree( Node root){
+            if(root==null){
+                return 0;
+            }
+           int leftSum = sumOfTree(root.left);
+           int rightSum  = sumOfTree(root.right);
+
+           return leftSum+ rightSum + root.data;
+        }
+
+        public int maxDepth(Node root) {
+            if(root == null ){
+                return 0;
+            }
+            int leftDepth = maxDepth(root.left);
+            int rightDepth  = maxDepth(root.right);
+
+            return Math.max(leftDepth, rightDepth) + 1;
+        }
+
+        public  int Diameter(Node root){
+
+            if(root==null){
+                return 0;
+            }
+                int left = Diameter(root.left);
+                int right = Diameter(root.right);
+                int diam = maxDepth(root.left) + maxDepth(root.right) +1;
+                return Math.max(left , Math.max(right,diam));
+
+
+        }
+
+        public static class TreeInfo{
+            int height;
+            int diameter;
+            TreeInfo(int height,int diameter){
+                this.height = height;
+                this.diameter = diameter;
+            }
+        }
+
+        public static  TreeInfo DiamaterOp(Node root){
+            if(root== null){
+                return new TreeInfo(0, 0);
+            }
+            TreeInfo left = DiamaterOp(root.left);
+            TreeInfo right = DiamaterOp(root.right);
+
+            int myHeight = Math.max(left.height,right.height)+1;
+
+            int leftDiameter = left.diameter;
+            int rightDiameter = right.diameter;
+            int diameter3 = left.height + right.height +1;
+
+            int myDiameter = Math.max(diameter3,Math.max(rightDiameter,leftDiameter));
+
+return new TreeInfo(myHeight,myDiameter);
+            
+
         }
     }
 
@@ -158,7 +221,7 @@ public class BtreePreOrder {
         Node root = btree.buildTree(nodes);
         System.out.println("levelorder");
         btree.levelorder(root);
-        System.out.println("\npreorder");  
+        System.out.println("\npreorder");
 
         btree.preorder(root);
         System.out.println("\n\ninorder");
@@ -166,7 +229,11 @@ public class BtreePreOrder {
         System.out.println("\n\npost order");
         btree.postorder(root);
 
-       
+        System.out.println("\n\nsum of tree : "+ btree.sumOfTree(root));
+
+        System.out.println("\n \nmax depth of tree : "+ btree.maxDepth(root));
+
+        System.out.println("Diameter : " + Btree.DiamaterOp(root).diameter);
         // Expected Tree Structure:
         // 1
         // / \
